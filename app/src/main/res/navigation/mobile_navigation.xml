@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_transactions">
+
+    <fragment
+        android:id="@+id/navigation_transactions"
+        android:name="pl.podwikagrzegorz.mrbudget.ui.transactions.TransactionFragment"
+        android:label="@string/title_transactions"
+        tools:layout="@layout/transaction_fragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_statistics"
+        android:name="pl.podwikagrzegorz.mrbudget.ui.statistics.StatisticFragment"
+        android:label="@string/title_statistics"
+        tools:layout="@layout/statistic_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_history"
+        android:name="pl.podwikagrzegorz.mrbudget.ui.history.HistoryFragment"
+        android:label="@string/title_history"
+        tools:layout="@layout/history_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="pl.podwikagrzegorz.mrbudget.ui.settings.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/settings_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_expense"
+        android:name="pl.podwikagrzegorz.mrbudget.ui.expense.ExpenseFragment"
+        android:label="@string/expense"
+        tools:layout="@layout/expense_fragment" >
+
+        <argument
+            android:name="budgetId"
+            app:argType="long"
+            android:defaultValue="-1L"/>
+    </fragment>
+
+
+</navigation>
