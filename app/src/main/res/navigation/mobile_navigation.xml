@@ -13,10 +13,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_statistics"
-        android:name="pl.podwikagrzegorz.mrbudget.ui.statistics.StatisticFragment"
-        android:label="@string/title_statistics"
-        tools:layout="@layout/statistic_fragment" />
+        android:id="@+id/navigation_details"
+        android:name="pl.podwikagrzegorz.mrbudget.ui.details.DetailsFragment"
+        android:label="@string/title_details"
+        tools:layout="@layout/details_fragment" />
 
     <fragment
         android:id="@+id/navigation_history"

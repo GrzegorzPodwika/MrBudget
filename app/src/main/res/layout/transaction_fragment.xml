@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="transactionViewModel"
             type="pl.podwikagrzegorz.mrbudget.ui.transactions.TransactionViewModel" />
@@ -17,9 +19,9 @@
             android:id="@+id/tabLayout_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:bindTabItem="@{transactionViewModel.budgetDate}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:bindTabItem="@{transactionViewModel.budgetDate}"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.tabs.TabItem
@@ -34,8 +36,10 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/keyline_4"
-            app:cardBackgroundColor="@color/white"
+            android:layout_marginTop="@dimen/keyline_4"
+            android:layout_marginBottom="@dimen/keyline_4"
+            android:layout_marginStart="@dimen/keyline_2"
+            android:layout_marginEnd="@dimen/keyline_2"
             app:cardElevation="@dimen/keyline_2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -54,6 +58,7 @@
                     android:layout_marginTop="@dimen/keyline_5"
                     android:text="@string/total_expenses"
                     android:textAppearance="?attr/textAppearanceSubtitle1"
+                    android:textColor="?attr/colorOnBackground"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,6 +70,7 @@
                     android:layout_marginEnd="@dimen/keyline_6"
                     android:text="@string/total_income"
                     android:textAppearance="?attr/textAppearanceSubtitle1"
+                    android:textColor="?attr/colorOnBackground"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -77,8 +83,8 @@
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textColor="@android:color/holo_red_dark"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:text="@{String.valueOf(transactionViewModel.totalExpenses)}"
                     app:layout_constraintTop_toBottomOf="@+id/materialTextView_total_expenses"
+                    app:textExpense="@{transactionViewModel.totalExpenses}"
                     tools:text="-PLN 1033.00" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -87,11 +93,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/keyline_2"
                     android:layout_marginEnd="@dimen/keyline_6"
-                    android:text="@{String.valueOf(transactionViewModel.totalIncome)}"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textColor="@android:color/holo_green_light"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/materialTextView2"
+                    app:textIncome="@{transactionViewModel.totalIncome}"
                     tools:text="+PLN 2000.50" />
 
 

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="expense"
+            type="pl.podwikagrzegorz.mrbudget.data.domain.Expense" />
+
+        <variable
+            name="editdeleteListener"
+            type="pl.podwikagrzegorz.mrbudget.ui.adapters.EditDeleteListener" />
+    </data>
+
+    <com.chauthai.swipereveallayout.SwipeRevealLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mode="same_level"
+        app:dragEdge="left">
+
+
+        <!--SwipeLayout-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtEdit"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:background="#d2691e"
+                android:gravity="center"
+                android:text="EDIT"
+                android:onClick="@{() -> editdeleteListener.onEditClick(expense)}"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:id="@+id/txtDelete"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:background="#d269"
+                android:gravity="center"
+                android:onClick="@{() -> editdeleteListener.onDeleteClick(expense)}"
+                android:text="DELETE"
+                android:textColor="#ffffff" />
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/keyline_4">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textView_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                app:textExpenseType="@{expense.type}"
+                android:layout_marginStart="@dimen/keyline_2"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                tools:text="Savings" />
+
+            <TextView
+                android:id="@+id/textView_expense_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/keyline_2"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textColor="@color/red_600"
+                app:textWithPLNSuffix="@{expense.value}"
+                tools:text="54.72" />
+
+
+
+        </RelativeLayout>
+
+    </com.chauthai.swipereveallayout.SwipeRevealLayout>
+</layout>

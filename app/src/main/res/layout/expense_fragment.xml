@@ -2,6 +2,7 @@
 <layout>
 
     <data>
+
         <variable
             name="expenseViewModel"
             type="pl.podwikagrzegorz.mrbudget.ui.expense.ExpenseViewModel" />
@@ -31,8 +32,8 @@
                 android:layout_marginTop="@dimen/keyline_4"
                 android:layout_marginBottom="@dimen/keyline_4"
                 android:layout_toStartOf="@+id/textView_pln"
+                android:text="@{expenseViewModel.moneyAmountAsString}"
                 android:textAppearance="?attr/textAppearanceHeadline4"
-                android:text="@{expenseViewModel.currentMoneyAsString}"
                 tools:text="-155" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -40,18 +41,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:text="@string/pln_currency"
-                android:layout_marginTop="@dimen/keyline_4"
-                android:layout_marginBottom="@dimen/keyline_4"
                 android:layout_marginStart="@dimen/keyline_2"
+                android:layout_marginTop="@dimen/keyline_4"
                 android:layout_marginEnd="@dimen/keyline_4"
+                android:layout_marginBottom="@dimen/keyline_4"
+                android:text="@string/pln_currency"
                 android:textAppearance="?attr/textAppearanceHeadline4" />
 
             <com.google.android.material.tabs.TabLayout
-                android:layout_below="@id/textView_pln"
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textView_pln">
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/tabItem_expense"
@@ -68,50 +69,52 @@
             </com.google.android.material.tabs.TabLayout>
 
             <RadioGroup
-                android:layout_marginTop="@dimen/margin_16"
-                android:layout_below="@id/tabLayout"
                 android:id="@+id/radioGroup_expenses"
                 android:layout_width="match_parent"
-                android:checkedButton="@id/radioButton_zero"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tabLayout"
+                android:layout_marginTop="@dimen/margin_16"
+                android:checkedButton="@id/radioButton_zero_regular">
 
                 <RadioButton
-                    android:id="@+id/radioButton_zero"
+                    android:id="@+id/radioButton_zero_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?attr/textAppearanceSubtitle1"
-
-                    android:text="@string/regular_expenses" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?attr/textAppearanceSubtitle1"
-                    android:text="@string/one_off_expenses" />
+                    android:text="@string/regular_expenses"
+                    android:textAppearance="?attr/textAppearanceSubtitle1" />
 
                 <RadioButton
+                    android:id="@+id/radioButton_one_off"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?attr/textAppearanceSubtitle1"
-                    android:text="@string/savings" />
+                    android:text="@string/one_off_expenses"
+                    android:textAppearance="?attr/textAppearanceSubtitle1" />
 
                 <RadioButton
+                    android:id="@+id/radioButton_savings"
                     android:layout_width="wrap_content"
-                    android:textAppearance="?attr/textAppearanceSubtitle1"
                     android:layout_height="wrap_content"
-                    android:text="@string/retirement" />
+                    android:text="@string/savings"
+                    android:textAppearance="?attr/textAppearanceSubtitle1" />
+
+                <RadioButton
+                    android:id="@+id/radioButton_retirement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/retirement"
+                    android:textAppearance="?attr/textAppearanceSubtitle1" />
 
             </RadioGroup>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                app:srcCompat="@drawable/ic_check"
+                android:id="@+id/fabAddTransaction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
                 android:layout_margin="@dimen/keyline_4"
-                app:fabVisibility="@{expenseViewModel.currentMoneyValue}"
-                />
+                app:fabVisibility="@{expenseViewModel.moneyAmountAsString}"
+                app:srcCompat="@drawable/ic_check" />
 
         </RelativeLayout>
 
@@ -139,6 +142,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
+                    android:onClick="@{ () -> expenseViewModel.onSevenClick()}"
                     app:srcCompat="@drawable/ic_seven" />
 
                 <ImageView
@@ -146,6 +150,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
+                    android:onClick="@{ () -> expenseViewModel.onEightClick()}"
                     app:srcCompat="@drawable/ic_eight" />
 
                 <ImageView
@@ -153,14 +158,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
+                    android:onClick="@{ () -> expenseViewModel.onNineClick()}"
                     app:srcCompat="@drawable/ic_nine" />
 
-                <ImageView
-                    android:id="@+id/imageView_division"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    app:srcCompat="@drawable/ic_division" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/imageView_division"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="0.25"-->
+<!--                    app:srcCompat="@drawable/ic_division" />-->
             </LinearLayout>
 
             <LinearLayout
@@ -173,6 +179,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
+                    android:onClick="@{ () -> expenseViewModel.onFourClick()}"
                     app:srcCompat="@drawable/ic_four" />
 
                 <ImageView
@@ -180,6 +187,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
+                    android:onClick="@{ () -> expenseViewModel.onFiveClick()}"
                     app:srcCompat="@drawable/ic_five" />
 
                 <ImageView
@@ -187,14 +195,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
+                    android:onClick="@{ () -> expenseViewModel.onSixClick()}"
                     app:srcCompat="@drawable/ic_six" />
 
-                <ImageView
+<!--                <ImageView
                     android:id="@+id/imageView_multiplication"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
-                    app:srcCompat="@drawable/ic_multiplication" />
+                    app:srcCompat="@drawable/ic_multiplication" />-->
             </LinearLayout>
 
             <LinearLayout
@@ -207,6 +216,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
+                    android:onClick="@{ () -> expenseViewModel.onOneClick()}"
                     app:srcCompat="@drawable/ic_one" />
 
                 <ImageView
@@ -214,6 +224,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
+                    android:onClick="@{ () -> expenseViewModel.onTwoClick()}"
                     app:srcCompat="@drawable/ic_two" />
 
                 <ImageView
@@ -221,14 +232,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
+                    android:onClick="@{ () -> expenseViewModel.onThreeClick()}"
                     app:srcCompat="@drawable/ic_three" />
 
-                <ImageView
+<!--                <ImageView
                     android:id="@+id/imageView_subtraction"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
-                    app:srcCompat="@drawable/ic_subtraction" />
+                    app:srcCompat="@drawable/ic_subtraction" />-->
             </LinearLayout>
 
             <LinearLayout
@@ -240,6 +252,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
+                    android:onClick="@{ () -> expenseViewModel.onDotClick()}"
                     app:srcCompat="@drawable/ic_dot" />
 
                 <ImageView
@@ -247,6 +260,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
+                    android:onClick="@{ () -> expenseViewModel.onZeroClick()}"
                     app:srcCompat="@drawable/ic_zero" />
 
                 <ImageView
@@ -254,14 +268,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
+                    android:onClick="@{ () -> expenseViewModel.onClearClick()}"
                     app:srcCompat="@drawable/ic_clear" />
 
-                <ImageView
+<!--                <ImageView
                     android:id="@+id/imageView_addition"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
-                    app:srcCompat="@drawable/ic_addition" />
+                    app:srcCompat="@drawable/ic_addition" />-->
             </LinearLayout>
 
 
