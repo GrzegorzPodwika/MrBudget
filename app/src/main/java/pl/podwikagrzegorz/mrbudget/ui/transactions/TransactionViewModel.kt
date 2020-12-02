@@ -1,15 +1,11 @@
 package pl.podwikagrzegorz.mrbudget.ui.transactions
 
 import android.graphics.Color
-import androidx.core.graphics.ColorUtils
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.model.GradientColor
-import com.github.mikephil.charting.utils.ColorTemplate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -102,7 +98,6 @@ class TransactionViewModel @ViewModelInject constructor(
 
             val entries = mutableListOf<PieEntry>()
             val budgetWithExpenses = _budgetWithExpenses.value!!
-            val country = Locale.getDefault().country
 
             val countRegularExpenses = budgetWithExpenses.expenses.stream()
                 .filter {it.type == ExpenseType.REGULAR.name}
@@ -124,17 +119,10 @@ class TransactionViewModel @ViewModelInject constructor(
                 .mapToDouble(DatabaseExpense::value)
                 .sum()
 
-            if (country == "PL"){
-                entries.add(PieEntry(countRegularExpenses.toFloat(), ExpenseType.REGULAR.asPLName()))
-                entries.add(PieEntry(countOneOffExpenses.toFloat(), ExpenseType.ONE_OFF.asPLName()))
-                entries.add(PieEntry(countSavingExpenses.toFloat(), ExpenseType.SAVINGS.asPLName()))
-                entries.add(PieEntry(countRetirementExpenses.toFloat(), ExpenseType.RETIREMENT.asPLName()))
-            } else {
-                entries.add(PieEntry(countRegularExpenses.toFloat(), ExpenseType.REGULAR.name))
-                entries.add(PieEntry(countOneOffExpenses.toFloat(), ExpenseType.ONE_OFF))
-                entries.add(PieEntry(countSavingExpenses.toFloat(), ExpenseType.SAVINGS))
-                entries.add(PieEntry(countRetirementExpenses.toFloat(), ExpenseType.RETIREMENT))
-            }
+            addPieEntry(entries, countRegularExpenses, ExpenseType.REGULAR)
+            addPieEntry(entries, countOneOffExpenses, ExpenseType.ONE_OFF)
+            addPieEntry(entries, countSavingExpenses, ExpenseType.SAVINGS)
+            addPieEntry(entries, countRetirementExpenses, ExpenseType.RETIREMENT)
 
             val dataSet = PieDataSet(entries, "")
 
@@ -149,25 +137,19 @@ class TransactionViewModel @ViewModelInject constructor(
             PieData(dataSet)
         }
     }
+
+    private fun addPieEntry(
+        entries: MutableList<PieEntry>,
+        countExpenses: Double,
+        expenseType: ExpenseType,
+    ) {
+        val country = Locale.getDefault().country
+
+        if (countExpenses != 0.0) {
+            if (country == "PL")
+                entries.add(PieEntry(countExpenses.toFloat(), expenseType.asPLName()))
+            else
+                entries.add(PieEntry(countExpenses.toFloat(), expenseType.name))
+        }
+    }
 }
-
-/*
-            val totalExpenses = budgetWithExpenses.expenses
-                .stream()
-                .mapToDouble(DatabaseExpense::value)
-                .sum()
-
-val regularExpensesPercentage = calculatePercentageOfExpense(countRegularExpenses, totalExpenses)
-            val oneOffExpensesPercentage = calculatePercentageOfExpense(countOneOffExpenses, totalExpenses)
-            val savingExpensesPercentage = calculatePercentageOfExpense(countSavingExpenses, totalExpenses)
-            val retirementExpensesPercentage = calculatePercentageOfExpense(countRetirementExpenses, totalExpenses)
-
-            entries.add(PieEntry(regularExpensesPercentage, ExpenseType.REGULAR.name))
-            entries.add(PieEntry(oneOffExpensesPercentage, ExpenseType.ONE_OFF.name))
-            entries.add(PieEntry(savingExpensesPercentage, ExpenseType.SAVINGS.name))
-            entries.add(PieEntry(retirementExpensesPercentage, ExpenseType.RETIREMENT.name))
-
-
-    private fun calculatePercentageOfExpense(expense: Double, totalExpense: Double) : Float =
-        (expense * 100 / totalExpense).toFloat()
-       */
