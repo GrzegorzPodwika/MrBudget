@@ -22,8 +22,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val navController by lazy { findNavController(R.id.nav_host_fragment) }
-    @Inject
-    lateinit var repository: BudgetRepository
+    @Inject lateinit var repository: BudgetRepository
     private var budgetId: Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {

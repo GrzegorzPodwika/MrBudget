@@ -33,7 +33,7 @@ class TransactionViewModel @ViewModelInject constructor(
         Color.rgb(208, 115, 23) // brown - ret
     )
 
-    private lateinit var latestBudget: Budget
+    private val latestBudget = MutableLiveData<Budget>()
 
     private val _budgetDate = MutableLiveData<String>()
     val budgetDate: LiveData<String>
@@ -57,6 +57,7 @@ class TransactionViewModel @ViewModelInject constructor(
     fun fetchFreshData() =
         viewModelScope.launch {
             Timber.i("Fetching fresh data")
+            latestBudget.value = repository.getLatestBudget()
             fetchDataFromDb()
         }
 
@@ -66,14 +67,14 @@ class TransactionViewModel @ViewModelInject constructor(
 
     private fun fetchLatestBudgetFromDb() =
         viewModelScope.launch {
-            latestBudget = repository.getLatestBudget()
-            _budgetDate.postValue(dtf.format(latestBudget.date))
+            latestBudget.value = repository.getLatestBudget()
+            _budgetDate.postValue(dtf.format(latestBudget.value!!.date))
 
             fetchDataFromDb()
         }
 
     private suspend fun fetchDataFromDb() {
-        _budgetWithExpenses.value = repository.getBudgetWithExpenses(latestBudget.budgetId)
+        _budgetWithExpenses.value = repository.getBudgetWithExpenses(latestBudget.value!!.budgetId)
         val totalExpenses = _budgetWithExpenses.value!!.expenses
             .stream()
             .mapToDouble(DatabaseExpense::value)
@@ -82,7 +83,7 @@ class TransactionViewModel @ViewModelInject constructor(
         _totalExpenses.postValue(totalExpenses)
 
 
-        val budgetWithIncomes = repository.getBudgetWithIncomes(latestBudget.budgetId)
+        val budgetWithIncomes = repository.getBudgetWithIncomes(latestBudget.value!!.budgetId)
         val totalIncomes = budgetWithIncomes.incomes
             .stream()
             .mapToDouble(DatabaseIncome::value)

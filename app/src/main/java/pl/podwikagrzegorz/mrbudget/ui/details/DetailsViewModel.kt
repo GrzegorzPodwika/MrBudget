@@ -13,12 +13,15 @@ import pl.podwikagrzegorz.mrbudget.data.repo.BudgetRepository
 class DetailsViewModel @ViewModelInject constructor(
     private val repository: BudgetRepository
 ) : ViewModel() {
-
-    private lateinit var latestBudget: Budget
+    private val latestBudget = MutableLiveData<Budget>()
 
     private val _listOfExpenses = MutableLiveData<List<Expense>>()
     val listOfExpenses : LiveData<List<Expense>>
         get() = _listOfExpenses
+
+    fun fetchFreshData() {
+        fetchDataFromDb()
+    }
 
     init {
         fetchDataFromDb()
@@ -26,7 +29,7 @@ class DetailsViewModel @ViewModelInject constructor(
 
     private fun fetchDataFromDb() =
         viewModelScope.launch {
-            latestBudget = repository.getLatestBudget()
+            latestBudget.value = repository.getLatestBudget()
 
             fetchListOfExpensesFromDb()
         }
@@ -46,8 +49,7 @@ class DetailsViewModel @ViewModelInject constructor(
         }
 
     private suspend fun fetchListOfExpensesFromDb() {
-        _listOfExpenses.postValue(repository.getListOfExpenses(latestBudget.budgetId))
+        _listOfExpenses.postValue(repository.getListOfExpenses(latestBudget.value!!.budgetId))
     }
-
 
 }

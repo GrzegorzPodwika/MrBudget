@@ -17,6 +17,9 @@ class HistoryViewModel @ViewModelInject constructor(
     val budgetsWithExpensesAndIncomes: LiveData<List<BudgetWithExpensesAndIncomes>>
         get() = _budgetsWithExpensesAndIncomes
 
+    fun fetchFreshData() {
+        fetchAllBudgetsFromDb()
+    }
 
     init {
         fetchAllBudgetsFromDb()
@@ -26,4 +29,5 @@ class HistoryViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             _budgetsWithExpensesAndIncomes.postValue(repository.getAllBudgets())
         }
+
 }

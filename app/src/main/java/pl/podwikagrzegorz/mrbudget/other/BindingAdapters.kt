@@ -46,7 +46,6 @@ fun textWithPLNSuffix(textView: TextView, expense: Double) {
 @BindingAdapter("textExpenseType")
 fun textExpenseType(textView: TextView, expenseType: ExpenseType) {
     val country = Locale.getDefault().country
-    Timber.i("Country = $country")
 
     if (country == "PL") {
         textView.text = expenseType.asPLName()
