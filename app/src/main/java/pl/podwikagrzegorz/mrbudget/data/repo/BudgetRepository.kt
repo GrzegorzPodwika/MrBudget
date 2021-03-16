@@ -16,6 +16,8 @@ interface BudgetRepository {
 
     suspend fun getBudgetsCount(): Int
 
+    suspend fun getBudgetById(budgetId: Long) : Budget
+
     suspend fun getLatestBudget(): Budget
 
     suspend fun getBudgetWithExpenses(budgetId: Long): BudgetWithExpenses

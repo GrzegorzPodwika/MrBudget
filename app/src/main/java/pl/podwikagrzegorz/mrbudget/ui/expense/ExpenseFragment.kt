@@ -5,23 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import pl.podwikagrzegorz.mrbudget.R
-import pl.podwikagrzegorz.mrbudget.data.domain.Expense
 import pl.podwikagrzegorz.mrbudget.data.domain.ExpenseType
 import pl.podwikagrzegorz.mrbudget.databinding.ExpenseFragmentBinding
 import pl.podwikagrzegorz.mrbudget.other.resIdByName
 import pl.podwikagrzegorz.mrbudget.ui.adapters.ExpenseTypeAdapter
-import pl.podwikagrzegorz.mrbudget.ui.adapters.OnSelectExpenseTypeListener
 import pl.podwikagrzegorz.mrbudget.ui.transactions.SharedViewModel
 import java.util.*
 
@@ -32,11 +27,7 @@ class ExpenseFragment : Fragment() {
     private val viewModel: ExpenseViewModel by viewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var adapter : ExpenseTypeAdapter
-    private val listener = object : OnSelectExpenseTypeListener {
-        override fun onTypeClick(expenseType: ExpenseType) {
-            selectedExpenseType = expenseType
-        }
-    }
+
     private var selectedExpenseType: ExpenseType? = null
 
     override fun onCreateView(
@@ -73,7 +64,10 @@ class ExpenseFragment : Fragment() {
             expenseTypeIcons.add(resources.getDrawable(resId, null))
         }
 
-        adapter = ExpenseTypeAdapter(expenseTypeIcons, listener)
+        adapter = ExpenseTypeAdapter(expenseTypeIcons)
+        adapter.listener = ExpenseTypeAdapter.OnSelectExpenseTypeListener { expenseType ->
+            selectedExpenseType = expenseType
+        }
         binding.recViewExpenseTypes.adapter = adapter
     }
 
@@ -121,7 +115,6 @@ class ExpenseFragment : Fragment() {
             Toast.makeText(requireContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show()
             return
         }
-
 
         val name : String = if (binding.editTextNameOfExpense.text != null) {
             binding.editTextNameOfExpense.text.toString()

@@ -11,11 +11,15 @@ import java.util.*
 
 class ExpenseTypeAdapter(
     private val images: List<Drawable>,
-    private val listener: OnSelectExpenseTypeListener
 ) : RecyclerView.Adapter<ExpenseTypeAdapter.ExpenseTypeHolder>() {
 
     private val listOfExpenseType = ExpenseType.values()
     private var checkedPosition = -1
+    var listener: OnSelectExpenseTypeListener? = null
+
+    fun interface OnSelectExpenseTypeListener {
+        fun onTypeClick(expenseType: ExpenseType)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpenseTypeHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -46,7 +50,7 @@ class ExpenseTypeAdapter(
                 }
             }
             binding.imageViewExpenseType.setOnClickListener {
-                listener.onTypeClick(expenseType)
+                listener?.onTypeClick(expenseType)
                 it.setBackgroundColor(GRAY)
                 if (checkedPosition != bindingAdapterPosition) {
                     notifyItemChanged(checkedPosition)

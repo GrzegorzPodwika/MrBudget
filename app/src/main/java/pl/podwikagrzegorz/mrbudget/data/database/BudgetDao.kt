@@ -17,6 +17,9 @@ interface BudgetDao {
     @Query("SELECT COUNT(*) from budget_table")
     suspend fun budgetsCount(): Int
 
+    @Query("SELECT * FROM budget_table WHERE budgetId = :key")
+    suspend fun getBudgetById(key: Long) : DatabaseBudget
+
     @Query("SELECT * FROM budget_table ORDER BY date DESC LIMIT 1")
     suspend fun getLatestBudget(): DatabaseBudget
 

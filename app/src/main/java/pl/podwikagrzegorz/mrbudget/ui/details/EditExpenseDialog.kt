@@ -44,6 +44,7 @@ class EditExpenseDialog(
     private fun setUpViewsWithCurrentValues() {
         binding.apply {
             textViewTypeName.text = expenseToEdit.type.name
+            editTextExpenseNameEdit.setText(expenseToEdit.name)
             editTextAmountOfMoney.setText(expenseToEdit.value.toString())
         }
     }

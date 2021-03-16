@@ -11,11 +11,11 @@ class FakeBudgetRepository : BudgetRepository {
     private val _listOfExpenses = mutableListOf<Expense>()
 
     private val _listOfIncomes = mutableListOf<Income>()
-    val listOfIncomes : List<Income>
+    val listOfIncomes: List<Income>
         get() = _listOfIncomes
 
     private val _listOfBudgets = mutableListOf<Budget>()
-    val listOfBudgets : List<Budget>
+    val listOfBudgets: List<Budget>
         get() = _listOfBudgets
 
     override suspend fun insertExpense(newExpense: Expense) {
@@ -31,6 +31,10 @@ class FakeBudgetRepository : BudgetRepository {
     }
 
     override suspend fun getBudgetsCount(): Int = _listOfBudgets.size
+
+    override suspend fun getBudgetById(budgetId: Long): Budget =
+        _listOfBudgets[budgetId.toInt()]
+
 
     override suspend fun getLatestBudget(): Budget = _listOfBudgets[_listOfBudgets.size - 1]
 
@@ -51,7 +55,7 @@ class FakeBudgetRepository : BudgetRepository {
     }
 
     override suspend fun deleteExpense(expenseToDelete: Expense) {
-       _listOfExpenses.remove(expenseToDelete)
+        _listOfExpenses.remove(expenseToDelete)
     }
 
     override suspend fun updateExpense(updatedExpense: Expense) {

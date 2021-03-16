@@ -10,12 +10,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import com.github.mikephil.charting.components.Description
+import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import pl.podwikagrzegorz.mrbudget.R
 import pl.podwikagrzegorz.mrbudget.databinding.TransactionFragmentBinding
 import pl.podwikagrzegorz.mrbudget.other.Constants
-import timber.log.Timber
 
 @AndroidEntryPoint
 class TransactionFragment : Fragment() {
@@ -24,6 +23,11 @@ class TransactionFragment : Fragment() {
     private val viewModel: TransactionViewModel by viewModels()
     private val sharedViewModel : SharedViewModel by activityViewModels()
     private val navController by lazy { findNavController() }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = MaterialFadeThrough()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,8 +38,7 @@ class TransactionFragment : Fragment() {
         setUpBindingWithViewModel()
         presetPieChartAppearance()
         setupFabListener()
-        observeBudgetWithExpenses()
-        observeIfTransactionHasBeenAdded()
+        observeData()
 
         return binding.root
     }
@@ -48,7 +51,7 @@ class TransactionFragment : Fragment() {
     }
 
     private fun presetPieChartAppearance() {
-        binding.piechartExpenses.apply {
+        binding.cardviewExpenses.piechartExpenses.apply {
             setUsePercentValues(true)
             centerText = getString(R.string.expenses)
             setCenterTextSize(20f)
@@ -74,10 +77,26 @@ class TransactionFragment : Fragment() {
         }
     }
 
+    private fun observeData() {
+        observeBudgetWithExpenses()
+        observeTotalExpensesAndIncomes()
+        observeIfTransactionHasBeenAdded()
+    }
+
     private fun observeBudgetWithExpenses() {
         viewModel.expensesPieData.observe(viewLifecycleOwner, { pieData ->
-            binding.piechartExpenses.data = pieData
-            binding.piechartExpenses.invalidate()
+            binding.cardviewExpenses.piechartExpenses.data = pieData
+            binding.cardviewExpenses.piechartExpenses.invalidate()
+        })
+    }
+
+    private fun observeTotalExpensesAndIncomes() {
+        viewModel.totalExpenses.observe(viewLifecycleOwner, { totalExpenses ->
+            binding.cardviewExpenses.totalExpenses = totalExpenses
+        })
+
+        viewModel.totalIncomes.observe(viewLifecycleOwner, { totalIncomes ->
+            binding.cardviewExpenses.totalIncomes = totalIncomes
         })
     }
 

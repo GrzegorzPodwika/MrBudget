@@ -22,6 +22,9 @@ class DefaultBudgetRepository @Inject constructor(
     override suspend fun getBudgetsCount() =
         budgetDao.budgetsCount()
 
+    override suspend fun getBudgetById(budgetId: Long): Budget =
+        budgetDao.getBudgetById(budgetId).asDomainModel()
+
     override suspend fun getLatestBudget() =
         budgetDao.getLatestBudget().asDomainModel()
 
@@ -31,7 +34,7 @@ class DefaultBudgetRepository @Inject constructor(
     override suspend fun getBudgetWithIncomes(budgetId: Long) =
         budgetDao.getAllIncomes(budgetId)
 
-    override suspend fun getListOfExpenses(budgetId: Long) : List<Expense>{
+    override suspend fun getListOfExpenses(budgetId: Long): List<Expense> {
         return withContext(Dispatchers.IO) {
             val budgetWithExpenses = getBudgetWithExpenses(budgetId)
 
@@ -53,20 +56,25 @@ class DefaultBudgetRepository @Inject constructor(
         budgetDao.getAllBudgetsWithIncomes().asDomainBudgetWithIncomes()*/
 
     override suspend fun getAllBudgets(): List<BudgetWithExpensesAndIncomes> {
-        val budgetsWithExpenses =  budgetDao.getAllBudgetsWithExpenses()
+        val budgetsWithExpenses = budgetDao.getAllBudgetsWithExpenses()
         val budgetsWithIncomes = budgetDao.getAllBudgetsWithIncomes()
         return convertDbBudgetIntoDomainBudget(budgetsWithExpenses, budgetsWithIncomes)
     }
 
-    private suspend fun convertDbBudgetIntoDomainBudget(budgetsWithExpenses: List<BudgetWithExpenses>, budgetsWithIncomes: List<BudgetWithIncomes>) : List<BudgetWithExpensesAndIncomes> {
+    private suspend fun convertDbBudgetIntoDomainBudget(
+        budgetsWithExpenses: List<BudgetWithExpenses>,
+        budgetsWithIncomes: List<BudgetWithIncomes>
+    ): List<BudgetWithExpensesAndIncomes> {
         return withContext(Dispatchers.Default) {
             val listOfDomainBudgets = mutableListOf<BudgetWithExpensesAndIncomes>()
 
-            for (i in budgetsWithExpenses.indices){
+            for (i in budgetsWithExpenses.indices) {
                 listOfDomainBudgets.add(
-                    BudgetWithExpensesAndIncomes(budget =  budgetsWithExpenses[i].budget.asDomainModel(),
-                    expenses = budgetsWithExpenses[i].expenses.asListOfExpenses(),
-                    incomes = budgetsWithIncomes[i].incomes.asListOfIncomes())
+                    BudgetWithExpensesAndIncomes(
+                        budget = budgetsWithExpenses[i].budget.asDomainModel(),
+                        expenses = budgetsWithExpenses[i].expenses.asListOfExpenses(),
+                        incomes = budgetsWithIncomes[i].incomes.asListOfIncomes()
+                    )
                 )
             }
 

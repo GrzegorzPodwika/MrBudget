@@ -9,7 +9,7 @@
 
         <variable
             name="editdeleteListener"
-            type="pl.podwikagrzegorz.mrbudget.ui.adapters.EditDeleteListener" />
+            type="pl.podwikagrzegorz.mrbudget.ui.adapters.ExpenseAdapter.EditDeleteListener" />
     </data>
 
     <com.chauthai.swipereveallayout.SwipeRevealLayout

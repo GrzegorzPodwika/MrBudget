@@ -10,12 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
+import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import pl.podwikagrzegorz.mrbudget.R
 import pl.podwikagrzegorz.mrbudget.data.domain.Expense
 import pl.podwikagrzegorz.mrbudget.data.domain.ExpenseType
 import pl.podwikagrzegorz.mrbudget.databinding.DetailsFragmentBinding
-import pl.podwikagrzegorz.mrbudget.ui.adapters.EditDeleteListener
 import pl.podwikagrzegorz.mrbudget.ui.adapters.ExpenseAdapter
 import pl.podwikagrzegorz.mrbudget.ui.transactions.SharedViewModel
 
@@ -24,21 +24,18 @@ class DetailsFragment : Fragment() {
 
     private lateinit var binding: DetailsFragmentBinding
     private val viewModel: DetailsViewModel by viewModels()
-    private val sharedViewModel : SharedViewModel by activityViewModels()
-    private val expenseAdapter = ExpenseAdapter(object : EditDeleteListener {
-        override fun onEditClick(expense: Expense) {
-            showEditExpenseDialog(expense)
-        }
-
-        override fun onDeleteClick(expense: Expense) {
-            viewModel.deleteExpense(expense)
-        }
-    })
+    private val sharedViewModel: SharedViewModel by activityViewModels()
+    private val expenseAdapter = ExpenseAdapter()
 
     private fun showEditExpenseDialog(expenseToEdit: Expense) {
-        EditExpenseDialog(expenseToEdit) {updatedExpense ->
+        EditExpenseDialog(expenseToEdit) { updatedExpense ->
             viewModel.updateExpense(updatedExpense)
         }.show(childFragmentManager, null)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = MaterialFadeThrough()
     }
 
     override fun onCreateView(
@@ -48,6 +45,7 @@ class DetailsFragment : Fragment() {
         binding = DetailsFragmentBinding.inflate(inflater, container, false)
 
         setUpBindingView()
+        setUpExpenseAdapter()
         observeListOfExpenses()
         observeIfTransactionHasBeenAdded()
         setUpChipGroupExpenseType()
@@ -56,10 +54,29 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setUpBindingView() {
+
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
-            recViewExpenses.addItemDecoration(DividerItemDecoration(recViewExpenses.context, (recViewExpenses.layoutManager!! as LinearLayoutManager).orientation))
+            recViewExpenses.addItemDecoration(
+                DividerItemDecoration(
+                    recViewExpenses.context,
+                    (recViewExpenses.layoutManager!! as LinearLayoutManager).orientation
+                )
+            )
             recViewExpenses.adapter = expenseAdapter
+        }
+    }
+
+    private fun setUpExpenseAdapter() {
+        expenseAdapter.listener = object : ExpenseAdapter.EditDeleteListener {
+            override fun onEditClick(expense: Expense) {
+                showEditExpenseDialog(expense)
+            }
+
+            override fun onDeleteClick(expense: Expense) {
+                viewModel.deleteExpense(expense)
+            }
+
         }
     }
 
@@ -73,11 +90,11 @@ class DetailsFragment : Fragment() {
     }
 
     private fun getCurrentExpenseTypeFromChipGroup(): ExpenseType? {
-        val checkedId =  binding.chipGroup.checkedChipId
+        val checkedId = binding.chipGroup.checkedChipId
         return if (checkedId == View.NO_ID) {
             null
         } else {
-            when(binding.chipGroup.findViewById<Chip>(checkedId)!!.text) {
+            when (binding.chipGroup.findViewById<Chip>(checkedId)!!.text) {
                 getString(R.string.groceries) -> ExpenseType.GROCERIES
                 getString(R.string.transport) -> ExpenseType.TRANSPORT
                 getString(R.string.health) -> ExpenseType.HEALTH

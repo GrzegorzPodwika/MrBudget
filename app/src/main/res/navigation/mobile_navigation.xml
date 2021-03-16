@@ -9,8 +9,7 @@
         android:id="@+id/navigation_transactions"
         android:name="pl.podwikagrzegorz.mrbudget.ui.transactions.TransactionFragment"
         android:label="@string/title_transactions"
-        tools:layout="@layout/transaction_fragment">
-    </fragment>
+        tools:layout="@layout/transaction_fragment" />
 
     <fragment
         android:id="@+id/navigation_details"
@@ -34,12 +33,22 @@
         android:id="@+id/navigation_expense"
         android:name="pl.podwikagrzegorz.mrbudget.ui.expense.ExpenseFragment"
         android:label="@string/expense"
-        tools:layout="@layout/expense_fragment" >
+        tools:layout="@layout/expense_fragment">
 
         <argument
             android:name="budgetId"
-            app:argType="long"
-            android:defaultValue="-1L"/>
+            android:defaultValue="-1L"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_history_details"
+        android:name="pl.podwikagrzegorz.mrbudget.ui.history.HistoryDetailsFragment"
+        tools:layout="@layout/cardview_piechart_expenses">
+        <argument
+            android:name="budgetId"
+            android:defaultValue="-1L"
+            app:argType="long" />
     </fragment>
 
 

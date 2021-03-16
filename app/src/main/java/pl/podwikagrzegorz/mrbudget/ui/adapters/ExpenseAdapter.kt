@@ -17,15 +17,20 @@ import pl.podwikagrzegorz.mrbudget.data.domain.Expense
 import pl.podwikagrzegorz.mrbudget.data.domain.ExpenseType
 import pl.podwikagrzegorz.mrbudget.databinding.ExpenseViewBinding
 
-class ExpenseAdapter(
-    private val editDeleteListener: EditDeleteListener
-) : ListAdapter<Expense, ExpenseAdapter.ExpenseViewHolder>(ExpenseDiffCallback) {
+class ExpenseAdapter
+    : ListAdapter<Expense, ExpenseAdapter.ExpenseViewHolder>(ExpenseDiffCallback) {
 
     private val viewBinderHelper = ViewBinderHelper()
-    private lateinit var originalListOfExpenses : List<Expense>
+    private lateinit var originalListOfExpenses: List<Expense>
     private val adapterScope = CoroutineScope(Dispatchers.Default)
+    var listener: EditDeleteListener? = null
 
-    fun submitListOfExpenses(listOfExpenses: List<Expense>){
+    interface EditDeleteListener {
+        fun onEditClick(expense: Expense)
+        fun onDeleteClick(expense: Expense)
+    }
+
+    fun submitListOfExpenses(listOfExpenses: List<Expense>) {
         originalListOfExpenses = listOfExpenses
 
         submitList(originalListOfExpenses)
@@ -42,7 +47,7 @@ class ExpenseAdapter(
         viewBinderHelper.bind(holder.binding.swipeLayout, expense.expenseId.toString())
         viewBinderHelper.closeLayout(expense.expenseId.toString())
 
-        holder.bind(expense, editDeleteListener)
+        holder.bind(expense, listener)
     }
 
     fun filterList(expenseType: ExpenseType?) {
@@ -52,58 +57,66 @@ class ExpenseAdapter(
                     submitList(originalListOfExpenses)
                 }
             } else {
-                when(expenseType) {
+                when (expenseType) {
                     ExpenseType.GROCERIES -> {
-                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.GROCERIES }
+                        val filteredList =
+                            originalListOfExpenses.filter { expense -> expense.type == ExpenseType.GROCERIES }
                         withContext(Dispatchers.Main) {
                             submitList(filteredList)
                         }
                     }
 
                     ExpenseType.TRANSPORT -> {
-                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.TRANSPORT }
+                        val filteredList =
+                            originalListOfExpenses.filter { expense -> expense.type == ExpenseType.TRANSPORT }
                         withContext(Dispatchers.Main) {
                             submitList(filteredList)
                         }
                     }
 
                     ExpenseType.HEALTH -> {
-                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.HEALTH }
+                        val filteredList =
+                            originalListOfExpenses.filter { expense -> expense.type == ExpenseType.HEALTH }
                         withContext(Dispatchers.Main) {
                             submitList(filteredList)
                         }
                     }
 
                     ExpenseType.FAMILY -> {
-                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.FAMILY }
+                        val filteredList =
+                            originalListOfExpenses.filter { expense -> expense.type == ExpenseType.FAMILY }
                         withContext(Dispatchers.Main) {
                             submitList(filteredList)
                         }
                     }
 
                     ExpenseType.GIFTS -> {
-                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.GIFTS }
+                        val filteredList =
+                            originalListOfExpenses.filter { expense -> expense.type == ExpenseType.GIFTS }
                         kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
                             submitList(filteredList)
                         }
                     }
 
                     ExpenseType.EDUCATION -> {
-                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.EDUCATION }
+                        val filteredList =
+                            originalListOfExpenses.filter { expense -> expense.type == ExpenseType.EDUCATION }
                         kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
                             submitList(filteredList)
                         }
                     }
 
                     ExpenseType.HOME -> {
-                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.HOME }
+                        val filteredList =
+                            originalListOfExpenses.filter { expense -> expense.type == ExpenseType.HOME }
                         kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
                             submitList(filteredList)
                         }
                     }
 
                     ExpenseType.HOBBY -> {
-                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.HOBBY }
+                        val filteredList =
+                            originalListOfExpenses.filter { expense -> expense.type == ExpenseType.HOBBY }
                         kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
                             submitList(filteredList)
                         }
@@ -117,9 +130,11 @@ class ExpenseAdapter(
     class ExpenseViewHolder private constructor(val binding: ExpenseViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(expense: Expense, editDeleteListener: EditDeleteListener) {
+        fun bind(expense: Expense, listener: EditDeleteListener?) {
             binding.expense = expense
-            binding.editdeleteListener = editDeleteListener
+            listener?.let {
+                binding.editdeleteListener = it
+            }
             binding.executePendingBindings()
         }
 
@@ -143,7 +158,6 @@ class ExpenseAdapter(
         }
 
     }
-
 
 
 }
