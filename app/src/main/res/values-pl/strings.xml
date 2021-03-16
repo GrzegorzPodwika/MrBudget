@@ -18,10 +18,6 @@
     <string name="cancel">ANULUJ</string>
     <string name="confirm">POTWIERDŹ</string>
     <string name="instructions_enable_dark_title">Tryb ciemny</string>
-    <string name="regular">Regularne</string>
-    <string name="one_off">Jednorazowe</string>
-    <string name="saving">Oszczędności</string>
-    <string name="all">Wszystkie</string>
 
     <string-array name="months">
         <item>Styczeń</item>
@@ -37,4 +33,16 @@
         <item>Listopad</item>
         <item>Grudzień</item>
     </string-array>
+    <string name="groceries">Zakupy</string>
+    <string name="transport">Transport</string>
+    <string name="health">Zdrowie</string>
+    <string name="family">Rodzina</string>
+    <string name="gifts">Prezenty</string>
+    <string name="education">Edukacja</string>
+    <string name="home">Dom</string>
+    <string name="hobby">Hobby</string>
+    <string name="select_category">Wybierz kategorię</string>
+    <string name="expense_hint">Nazwa wydatku</string>
+
+
 </resources>

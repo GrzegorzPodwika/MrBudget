@@ -1,28 +1,30 @@
 package pl.podwikagrzegorz.mrbudget.ui.expense
 
 import androidx.databinding.Bindable
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import pl.podwikagrzegorz.mrbudget.BR
 import pl.podwikagrzegorz.mrbudget.data.domain.Expense
 import pl.podwikagrzegorz.mrbudget.data.domain.ExpenseType
 import pl.podwikagrzegorz.mrbudget.data.domain.Income
 import pl.podwikagrzegorz.mrbudget.data.repo.BudgetRepository
+import pl.podwikagrzegorz.mrbudget.data.repo.DefaultBudgetRepository
 import pl.podwikagrzegorz.mrbudget.other.Constants
 import pl.podwikagrzegorz.mrbudget.other.deleteLast
 import timber.log.Timber
 import java.lang.StringBuilder
+import javax.inject.Inject
 
-class ExpenseViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ExpenseViewModel @Inject constructor(
     private val budgetRepository: BudgetRepository,
-    @Assisted private val stateHandle: SavedStateHandle
+    private val stateHandle: SavedStateHandle
 ) : ObservableViewModel() {
     private val budgetId = stateHandle.get<Long>(Constants.BUDGET_ID)!!
 
     private val _insertSuccess = MutableLiveData<Boolean>()
-    val insertSuccess : LiveData<Boolean>
+    val insertSuccess: LiveData<Boolean>
         get() = _insertSuccess
 
     private val moneySB: StringBuilder = StringBuilder()
@@ -37,61 +39,96 @@ class ExpenseViewModel @ViewModelInject constructor(
         }
 
     fun onZeroClick() {
-        moneySB.append(0)
-        refreshMoneyValue()
+        if (isAppendingCorrect(0)) {
+            moneySB.append(0)
+            refreshMoneyValue()
+        }
+    }
+
+    private fun isAppendingCorrect(value: Int): Boolean {
+        val currentAmount = moneySB.toString()
+        if (currentAmount.isNotEmpty()) {
+            if (currentAmount.contains('.')) {
+                val dotPosition = currentAmount.indexOf('.')
+                val sub = currentAmount.substring(dotPosition) + value
+
+                if (sub.length > 3)
+                    return false
+            }
+        }
+
+        return true
     }
 
     fun onOneClick() {
-        moneySB.append(1)
-        refreshMoneyValue()
+        if (isAppendingCorrect(1)) {
+            moneySB.append(1)
+            refreshMoneyValue()
+        }
     }
 
     fun onTwoClick() {
-        moneySB.append(2)
-        refreshMoneyValue()
+        if (isAppendingCorrect(2)) {
+            moneySB.append(2)
+            refreshMoneyValue()
+        }
     }
 
 
     fun onThreeClick() {
-        moneySB.append(3)
-        refreshMoneyValue()
+        if (isAppendingCorrect(3)) {
+            moneySB.append(3)
+            refreshMoneyValue()
+        }
     }
 
 
     fun onFourClick() {
-        moneySB.append(4)
-        refreshMoneyValue()
+        if (isAppendingCorrect(4)) {
+            moneySB.append(4)
+            refreshMoneyValue()
+        }
     }
 
 
     fun onFiveClick() {
-        moneySB.append(5)
-        refreshMoneyValue()
+        if (isAppendingCorrect(5)) {
+            moneySB.append(5)
+            refreshMoneyValue()
+        }
     }
 
 
     fun onSixClick() {
-        moneySB.append(6)
-        refreshMoneyValue()
+        if (isAppendingCorrect(6)) {
+            moneySB.append(6)
+            refreshMoneyValue()
+        }
     }
 
     fun onSevenClick() {
-        moneySB.append(7)
-        refreshMoneyValue()
+        if (isAppendingCorrect(7)) {
+            moneySB.append(7)
+            refreshMoneyValue()
+        }
     }
 
     fun onEightClick() {
-        moneySB.append(8)
-        refreshMoneyValue()
+        if (isAppendingCorrect(8)) {
+            moneySB.append(8)
+            refreshMoneyValue()
+        }
     }
 
     fun onNineClick() {
-        moneySB.append(9)
-        refreshMoneyValue()
+        if (isAppendingCorrect(9)) {
+            moneySB.append(9)
+            refreshMoneyValue()
+        }
     }
 
     fun onDotClick() {
-        if(moneySB.isNotEmpty()) {
+        if (moneySB.isNotEmpty()) {
             if (moneySB.last() != '.' && !moneySB.contains('.')) {
                 moneySB.append('.')
                 refreshMoneyValue()
@@ -118,10 +155,10 @@ class ExpenseViewModel @ViewModelInject constructor(
     }
 
 
-    fun addExpense(expenseType: ExpenseType) : Boolean{
-        return if(userAmountOfMoneyIsCorrect()) {
-            val newExpense = Expense(0, budgetId, expenseType, moneyAmountAsString.toDouble())
-            viewModelScope.launch{
+    fun addExpense(expenseType: ExpenseType, name: String): Boolean {
+        return if (userAmountOfMoneyIsCorrect()) {
+            val newExpense = Expense(0, budgetId, name, expenseType, moneyAmountAsString.toDouble())
+            viewModelScope.launch {
                 budgetRepository.insertExpense(newExpense)
                 _insertSuccess.postValue(true)
             }
@@ -130,10 +167,10 @@ class ExpenseViewModel @ViewModelInject constructor(
             false
     }
 
-    fun addIncome() : Boolean {
-        return if(userAmountOfMoneyIsCorrect()) {
-            val newIncome = Income(0, budgetId, moneyAmountAsString.toDouble())
-            viewModelScope.launch{
+    fun addIncome(name: String): Boolean {
+        return if (userAmountOfMoneyIsCorrect()) {
+            val newIncome = Income(0, budgetId, name, moneyAmountAsString.toDouble())
+            viewModelScope.launch {
                 budgetRepository.insertIncome(newIncome)
                 _insertSuccess.postValue(true)
             }

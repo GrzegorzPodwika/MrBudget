@@ -54,7 +54,13 @@ class EditExpenseDialog(
         }
 
         binding.buttonConfirm.setOnClickListener {
-            val newValue : Double = if(!binding.editTextAmountOfMoney.text.isNullOrEmpty()) {
+            val newName: String = if (!binding.editTextExpenseNameEdit.text.isNullOrEmpty()) {
+                binding.editTextExpenseNameEdit.text.toString()
+            } else {
+                expenseToEdit.name
+            }
+
+            val newAmount: Double = if (!binding.editTextAmountOfMoney.text.isNullOrEmpty()) {
                 try {
                     binding.editTextAmountOfMoney.text.toString().toDouble()
                 } catch (e: NumberFormatException) {
@@ -65,7 +71,16 @@ class EditExpenseDialog(
                 expenseToEdit.value
             }
 
-            listener.onChangedExpense(Expense(expenseToEdit.expenseId, expenseToEdit.budgetOwnerId, expenseToEdit.type, newValue))
+
+            listener.onChangedExpense(
+                Expense(
+                    expenseToEdit.expenseId,
+                    expenseToEdit.budgetOwnerId,
+                    newName,
+                    expenseToEdit.type,
+                    newAmount
+                )
+            )
 
             dismiss()
         }

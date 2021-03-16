@@ -78,10 +78,14 @@ class DetailsFragment : Fragment() {
             null
         } else {
             when(binding.chipGroup.findViewById<Chip>(checkedId)!!.text) {
-                getString(R.string.regular) -> ExpenseType.REGULAR
-                getString(R.string.one_off) -> ExpenseType.ONE_OFF
-                getString(R.string.saving) -> ExpenseType.SAVINGS
-                getString(R.string.retirement) -> ExpenseType.RETIREMENT
+                getString(R.string.groceries) -> ExpenseType.GROCERIES
+                getString(R.string.transport) -> ExpenseType.TRANSPORT
+                getString(R.string.health) -> ExpenseType.HEALTH
+                getString(R.string.family) -> ExpenseType.FAMILY
+                getString(R.string.gifts) -> ExpenseType.GIFTS
+                getString(R.string.education) -> ExpenseType.EDUCATION
+                getString(R.string.home) -> ExpenseType.HOME
+                getString(R.string.hobby) -> ExpenseType.HOBBY
                 else -> null
             }
         }
@@ -101,10 +105,15 @@ class DetailsFragment : Fragment() {
             val titleOrNull = group.findViewById<Chip>(checkedId)?.text
             if (titleOrNull != null) {
                 when (titleOrNull) {
-                    getString(R.string.regular) -> expenseAdapter.filterList(ExpenseType.REGULAR)
-                    getString(R.string.one_off) -> expenseAdapter.filterList(ExpenseType.ONE_OFF)
-                    getString(R.string.saving) -> expenseAdapter.filterList(ExpenseType.SAVINGS)
-                    getString(R.string.retirement) -> expenseAdapter.filterList(ExpenseType.RETIREMENT)
+                    getString(R.string.groceries) -> expenseAdapter.filterList(ExpenseType.GROCERIES)
+                    getString(R.string.transport) -> expenseAdapter.filterList(ExpenseType.TRANSPORT)
+                    getString(R.string.health) -> expenseAdapter.filterList(ExpenseType.HEALTH)
+                    getString(R.string.family) -> expenseAdapter.filterList(ExpenseType.FAMILY)
+                    getString(R.string.gifts) -> expenseAdapter.filterList(ExpenseType.GIFTS)
+                    getString(R.string.education) -> expenseAdapter.filterList(ExpenseType.EDUCATION)
+                    getString(R.string.home) -> expenseAdapter.filterList(ExpenseType.HOME)
+                    getString(R.string.hobby) -> expenseAdapter.filterList(ExpenseType.HOBBY)
+
                     else -> expenseAdapter.filterList(null)
                 }
             } else {

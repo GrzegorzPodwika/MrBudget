@@ -19,32 +19,61 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_regular"
+                android:id="@+id/chip_groceries"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:text="@string/regular" />
+                android:text="@string/groceries" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_one_off"
+                android:id="@+id/chip_transport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:text="@string/one_off" />
+                android:text="@string/transport"/>
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_saving"
+                android:id="@+id/chip_health"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:text="@string/saving" />
+                android:text="@string/health" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_retirement"
+                android:id="@+id/chip_family"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:text="@string/retirement" />
+                android:text="@string/family" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_gifts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:text="@string/gifts" />
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_education"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:text="@string/education" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:text="@string/home" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_hobby"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:text="@string/hobby" />
 
 
         </com.google.android.material.chip.ChipGroup>

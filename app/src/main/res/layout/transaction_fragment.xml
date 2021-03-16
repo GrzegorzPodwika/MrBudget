@@ -36,10 +36,10 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/keyline_4"
-            android:layout_marginBottom="@dimen/keyline_4"
             android:layout_marginStart="@dimen/keyline_2"
+            android:layout_marginTop="@dimen/keyline_4"
             android:layout_marginEnd="@dimen/keyline_2"
+            android:layout_marginBottom="@dimen/keyline_4"
             app:cardElevation="@dimen/keyline_2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -113,7 +113,20 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
         </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAddTransaction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:elevation="16dp"
+            android:layout_margin="8dp"
+            app:srcCompat="@drawable/ic_add" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

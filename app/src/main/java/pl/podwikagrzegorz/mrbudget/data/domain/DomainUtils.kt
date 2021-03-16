@@ -8,8 +8,8 @@ fun Budget.asDatabaseModel() : DatabaseBudget =
     DatabaseBudget(budgetId, date)
 
 fun Expense.asDatabaseModel() : DatabaseExpense =
-    DatabaseExpense(expenseId, budgetOwnerId, type.name, value)
+    DatabaseExpense(expenseId, budgetOwnerId, name, type.name, value)
 
 fun Income.asDatabaseModel() : DatabaseIncome =
-    DatabaseIncome(incomeId, budgetOwnerId, value)
+    DatabaseIncome(incomeId, budgetOwnerId, name,  value)
 

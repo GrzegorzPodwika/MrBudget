@@ -1,15 +1,18 @@
 package pl.podwikagrzegorz.mrbudget.ui.history
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import pl.podwikagrzegorz.mrbudget.data.domain.BudgetWithExpensesAndIncomes
 import pl.podwikagrzegorz.mrbudget.data.repo.BudgetRepository
+import pl.podwikagrzegorz.mrbudget.data.repo.DefaultBudgetRepository
+import javax.inject.Inject
 
-class HistoryViewModel @ViewModelInject constructor(
+@HiltViewModel
+class HistoryViewModel @Inject constructor(
     private val repository: BudgetRepository
 ) : ViewModel() {
 

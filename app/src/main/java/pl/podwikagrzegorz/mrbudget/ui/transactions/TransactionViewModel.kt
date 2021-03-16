@@ -1,11 +1,11 @@
 package pl.podwikagrzegorz.mrbudget.ui.transactions
 
 import android.graphics.Color
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -15,12 +15,16 @@ import pl.podwikagrzegorz.mrbudget.data.database.DatabaseIncome
 import pl.podwikagrzegorz.mrbudget.data.domain.Budget
 import pl.podwikagrzegorz.mrbudget.data.domain.ExpenseType
 import pl.podwikagrzegorz.mrbudget.data.repo.BudgetRepository
+import pl.podwikagrzegorz.mrbudget.data.repo.DefaultBudgetRepository
 import pl.podwikagrzegorz.mrbudget.other.MyPercentFormatter
 import pl.podwikagrzegorz.mrbudget.other.asPLName
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
-class TransactionViewModel @ViewModelInject constructor(
+import javax.inject.Inject
+
+@HiltViewModel
+class TransactionViewModel @Inject constructor(
     private val repository: BudgetRepository,
 ) : ViewModel() {
 
@@ -28,12 +32,18 @@ class TransactionViewModel @ViewModelInject constructor(
         SimpleDateFormat("MMM yyyy", Locale("pl"))
     private val setOfColors = mutableListOf<Int>(
         Color.rgb(176, 0, 32),  // red - regular
-        Color.rgb(55, 0 ,179),  // blue - one-off
+        Color.rgb(55, 0, 179),  // blue - one-off
         Color.rgb(10, 127, 88), // green - savings
-        Color.rgb(208, 115, 23) // brown - ret
+        Color.rgb(208, 115, 23), // brown - ret
+        Color.rgb(255, 102, 0), // orange
+        Color.rgb(245, 199, 0), // dark yellow
+        Color.rgb(52, 183, 192), // turquoise
+        Color.rgb(133, 54, 186) // purple
     )
 
-    private val latestBudget = MutableLiveData<Budget>()
+    private val _latestBudget = MutableLiveData<Budget>()
+    val latestBudget: LiveData<Budget>
+        get() = _latestBudget
 
     private val _budgetDate = MutableLiveData<String>()
     val budgetDate: LiveData<String>
@@ -51,30 +61,68 @@ class TransactionViewModel @ViewModelInject constructor(
 
 
     private val _expensesPieData = MutableLiveData<PieData>()
-    val expensesPieData : LiveData<PieData>
+    val expensesPieData: LiveData<PieData>
         get() = _expensesPieData
 
     fun fetchFreshData() =
         viewModelScope.launch {
             Timber.i("Fetching fresh data")
-            latestBudget.value = repository.getLatestBudget()
+            _latestBudget.value = repository.getLatestBudget()
             fetchDataFromDb()
         }
 
     init {
-        fetchLatestBudgetFromDb()
+        viewModelScope.launch {
+            checkIfNewBudgetShouldBeAdded()
+            fetchLatestBudgetFromDb()
+        }
     }
 
-    private fun fetchLatestBudgetFromDb() =
-        viewModelScope.launch {
-            latestBudget.value = repository.getLatestBudget()
-            _budgetDate.postValue(dtf.format(latestBudget.value!!.date))
+    private suspend fun checkIfNewBudgetShouldBeAdded() {
 
-            fetchDataFromDb()
+        val budgetsCount = repository.getBudgetsCount()
+
+        Timber.i("BudgetsCount = $budgetsCount")
+
+        if (budgetsCount == 0) {
+            Timber.i("Inserting first budget...")
+            repository.insertBudget(Budget(0, Date()))
+        } else {
+            val lastBudget = repository.getLatestBudget()
+            Timber.i("Lastbudget = $lastBudget")
+            Timber.i("Checking two budgets...")
+            if (currentMonthDiffersFromLastBudget(Date(), lastBudget.date)) {
+                repository.insertBudget(Budget(0, Date()))
+            }
         }
 
+    }
+
+    private fun currentMonthDiffersFromLastBudget(now: Date, lastBudgetDate: Date): Boolean {
+        val calendar = Calendar.getInstance()
+
+        calendar.time = now
+        val nowMonth = calendar.get(Calendar.MONTH)
+
+        calendar.time = lastBudgetDate
+        val lastBudgetMonth = calendar.get(Calendar.MONTH)
+
+        return nowMonth != lastBudgetMonth
+    }
+
+
+    private suspend fun fetchLatestBudgetFromDb() {
+        Timber.i("Method fetchLatestBudgetFromDb")
+
+        _latestBudget.value = repository.getLatestBudget()
+        Timber.i("latestbudget = ${latestBudget.value}")
+        _budgetDate.postValue(dtf.format(_latestBudget.value!!.date))
+
+        fetchDataFromDb()
+    }
+
     private suspend fun fetchDataFromDb() {
-        _budgetWithExpenses.value = repository.getBudgetWithExpenses(latestBudget.value!!.budgetId)
+        _budgetWithExpenses.value = repository.getBudgetWithExpenses(_latestBudget.value!!.budgetId)
         val totalExpenses = _budgetWithExpenses.value!!.expenses
             .stream()
             .mapToDouble(DatabaseExpense::value)
@@ -83,7 +131,7 @@ class TransactionViewModel @ViewModelInject constructor(
         _totalExpenses.postValue(totalExpenses)
 
 
-        val budgetWithIncomes = repository.getBudgetWithIncomes(latestBudget.value!!.budgetId)
+        val budgetWithIncomes = repository.getBudgetWithIncomes(_latestBudget.value!!.budgetId)
         val totalIncomes = budgetWithIncomes.incomes
             .stream()
             .mapToDouble(DatabaseIncome::value)
@@ -100,33 +148,19 @@ class TransactionViewModel @ViewModelInject constructor(
             val entries = mutableListOf<PieEntry>()
             val budgetWithExpenses = _budgetWithExpenses.value!!
 
-            val countRegularExpenses = budgetWithExpenses.expenses.stream()
-                .filter {it.type == ExpenseType.REGULAR.name}
-                .mapToDouble(DatabaseExpense::value)
-                .sum()
+            ExpenseType.values().forEach { expenseType ->
+                val countSpecificExpenseType = budgetWithExpenses.expenses.stream()
+                    .filter { it.type == expenseType.name }
+                    .mapToDouble(DatabaseExpense::value)
+                    .sum()
 
-            val countOneOffExpenses = budgetWithExpenses.expenses.stream()
-                .filter {it.type == ExpenseType.ONE_OFF.name}
-                .mapToDouble(DatabaseExpense::value)
-                .sum()
+                addPieEntry(entries, countSpecificExpenseType, expenseType)
+            }
 
-            val countSavingExpenses = budgetWithExpenses.expenses.stream()
-                .filter {it.type == ExpenseType.SAVINGS.name}
-                .mapToDouble(DatabaseExpense::value)
-                .sum()
-
-            val countRetirementExpenses = budgetWithExpenses.expenses.stream()
-                .filter {it.type == ExpenseType.RETIREMENT.name}
-                .mapToDouble(DatabaseExpense::value)
-                .sum()
-
-            addPieEntry(entries, countRegularExpenses, ExpenseType.REGULAR)
-            addPieEntry(entries, countOneOffExpenses, ExpenseType.ONE_OFF)
-            addPieEntry(entries, countSavingExpenses, ExpenseType.SAVINGS)
-            addPieEntry(entries, countRetirementExpenses, ExpenseType.RETIREMENT)
 
             val dataSet = PieDataSet(entries, "")
 
+            //colors = setOfColors
             dataSet.apply {
                 colors = setOfColors
                 sliceSpace = 2f

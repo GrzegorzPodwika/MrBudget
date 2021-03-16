@@ -8,5 +8,6 @@ data class DatabaseIncome constructor(
     @PrimaryKey(autoGenerate = true)
     val incomeId: Long,
     val budgetOwnerId: Long,
+    val name: String,
     val value: Double
 )

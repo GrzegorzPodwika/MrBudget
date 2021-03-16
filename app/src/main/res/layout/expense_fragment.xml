@@ -68,43 +68,31 @@
 
             </com.google.android.material.tabs.TabLayout>
 
-            <RadioGroup
-                android:id="@+id/radioGroup_expenses"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textinput_layout"
+                android:layout_width="match_parent"
+                android:layout_margin="@dimen/margin_16"
+                android:layout_below="@id/tabLayout"
+                app:endIconMode="clear_text"
+                android:hint="@string/expense_hint"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editText_name_of_expense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recView_expense_types"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tabLayout"
-                android:layout_marginTop="@dimen/margin_16"
-                android:checkedButton="@id/radioButton_zero_regular">
-
-                <RadioButton
-                    android:id="@+id/radioButton_zero_regular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/regular_expenses"
-                    android:textAppearance="?attr/textAppearanceSubtitle1" />
-
-                <RadioButton
-                    android:id="@+id/radioButton_one_off"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/one_off_expenses"
-                    android:textAppearance="?attr/textAppearanceSubtitle1" />
-
-                <RadioButton
-                    android:id="@+id/radioButton_savings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/savings"
-                    android:textAppearance="?attr/textAppearanceSubtitle1" />
-
-                <RadioButton
-                    android:id="@+id/radioButton_retirement"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/retirement"
-                    android:textAppearance="?attr/textAppearanceSubtitle1" />
-
-            </RadioGroup>
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="4"
+                android:layout_below="@id/textinput_layout"
+                android:layout_margin="@dimen/keyline_5"
+                />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabAddTransaction"

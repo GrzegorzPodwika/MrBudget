@@ -20,6 +20,7 @@ import pl.podwikagrzegorz.mrbudget.databinding.ExpenseViewBinding
 class ExpenseAdapter(
     private val editDeleteListener: EditDeleteListener
 ) : ListAdapter<Expense, ExpenseAdapter.ExpenseViewHolder>(ExpenseDiffCallback) {
+
     private val viewBinderHelper = ViewBinderHelper()
     private lateinit var originalListOfExpenses : List<Expense>
     private val adapterScope = CoroutineScope(Dispatchers.Default)
@@ -52,33 +53,62 @@ class ExpenseAdapter(
                 }
             } else {
                 when(expenseType) {
-                    ExpenseType.REGULAR -> {
-                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.REGULAR }
+                    ExpenseType.GROCERIES -> {
+                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.GROCERIES }
                         withContext(Dispatchers.Main) {
                             submitList(filteredList)
                         }
                     }
 
-                    ExpenseType.ONE_OFF -> {
-                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.ONE_OFF }
+                    ExpenseType.TRANSPORT -> {
+                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.TRANSPORT }
                         withContext(Dispatchers.Main) {
                             submitList(filteredList)
                         }
                     }
 
-                    ExpenseType.SAVINGS -> {
-                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.SAVINGS }
+                    ExpenseType.HEALTH -> {
+                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.HEALTH }
                         withContext(Dispatchers.Main) {
                             submitList(filteredList)
                         }
                     }
 
-                    ExpenseType.RETIREMENT -> {
-                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.RETIREMENT }
+                    ExpenseType.FAMILY -> {
+                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.FAMILY }
                         withContext(Dispatchers.Main) {
                             submitList(filteredList)
                         }
                     }
+
+                    ExpenseType.GIFTS -> {
+                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.GIFTS }
+                        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                            submitList(filteredList)
+                        }
+                    }
+
+                    ExpenseType.EDUCATION -> {
+                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.EDUCATION }
+                        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                            submitList(filteredList)
+                        }
+                    }
+
+                    ExpenseType.HOME -> {
+                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.HOME }
+                        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                            submitList(filteredList)
+                        }
+                    }
+
+                    ExpenseType.HOBBY -> {
+                        val filteredList = originalListOfExpenses.filter { expense -> expense.type == ExpenseType.HOBBY }
+                        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                            submitList(filteredList)
+                        }
+                    }
+
                 }
             }
         }

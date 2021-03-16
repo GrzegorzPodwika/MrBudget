@@ -1,5 +1,6 @@
 package pl.podwikagrzegorz.mrbudget.data.domain
 
 enum class ExpenseType {
-    REGULAR, ONE_OFF, SAVINGS, RETIREMENT
+    GROCERIES, TRANSPORT, HEALTH, FAMILY,
+    GIFTS, EDUCATION, HOME, HOBBY
 }

@@ -9,6 +9,7 @@ fun List<DatabaseExpense>.asListOfExpenses(): List<Expense> {
         Expense(
             expenseId = it.expenseId,
             budgetOwnerId = it.budgetOwnerId,
+            name= it.name,
             type = ExpenseType.valueOf(it.type),
             value = it.value
         )
@@ -20,6 +21,7 @@ fun List<DatabaseIncome>.asListOfIncomes(): List<Income> {
         Income(
             incomeId = it.incomeId,
             budgetOwnerId = it.budgetOwnerId,
+            name= it.name,
             value = it.value
         )
     }
@@ -32,6 +34,7 @@ suspend fun List<DatabaseExpense>.reverseAndConvertToDomainModel(): List<Expense
         for (index in (size-1) downTo 0) {
             result.add(Expense(listOfDatabaseExpense[index].expenseId,
                 listOfDatabaseExpense[index].budgetOwnerId,
+                listOfDatabaseExpense[index].name,
                 ExpenseType.valueOf(listOfDatabaseExpense[index].type),
                 listOfDatabaseExpense[index].value))
         }
@@ -45,8 +48,8 @@ fun DatabaseBudget.asDomainModel(): Budget =
 
 
 fun DatabaseExpense.asDomainModel(): Expense =
-    Expense(expenseId, budgetOwnerId, ExpenseType.valueOf(type), value)
+    Expense(expenseId, budgetOwnerId, name,  ExpenseType.valueOf(type), value)
 
 
 fun DatabaseIncome.asDomainModel(): Income =
-    Income(incomeId, budgetOwnerId, value)
+    Income(incomeId, budgetOwnerId, name , value)
