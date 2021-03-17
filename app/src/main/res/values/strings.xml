@@ -13,7 +13,7 @@
     <string name="retirement">Retirement</string>
     <string name="pln_currency">PLN</string>
     <string name="total_expenses">Total Expenses</string>
-    <string name="total_income">Total Income</string>
+    <string name="total_income">Total Incomes</string>
     <string name="cancel">CANCEL</string>
     <string name="confirm">CONFIRM</string>
     <string name="instructions_enable_dark_title">Dark Theme</string>
@@ -28,6 +28,7 @@
     <string name="hobby">Hobby</string>
     <string name="select_category">Please select category</string>
     <string name="expense_hint">Expense name</string>
+    <string name="income_hint">Income name</string>
 
 
     <string-array name="months">

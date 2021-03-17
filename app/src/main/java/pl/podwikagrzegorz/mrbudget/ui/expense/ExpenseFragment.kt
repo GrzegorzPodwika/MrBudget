@@ -82,8 +82,10 @@ class ExpenseFragment : Fragment() {
                 position?.let {
                     if (position == 0) {
                         binding.recViewExpenseTypes.visibility = View.VISIBLE
+                        binding.textinputLayout.hint = getString(R.string.expense_hint)
                     } else {
                         binding.recViewExpenseTypes.visibility = View.INVISIBLE
+                        binding.textinputLayout.hint = getString(R.string.income_hint)
                     }
                 }
             }
