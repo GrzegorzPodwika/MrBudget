@@ -5,11 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.transition.TransitionManager
+import com.google.android.material.color.MaterialColors
+import com.google.android.material.transition.MaterialArcMotion
+import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import pl.podwikagrzegorz.mrbudget.R
@@ -21,7 +27,7 @@ class TransactionFragment : Fragment() {
 
     private lateinit var binding: TransactionFragmentBinding
     private val viewModel: TransactionViewModel by viewModels()
-    private val sharedViewModel : SharedViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private val navController by lazy { findNavController() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,10 +69,10 @@ class TransactionFragment : Fragment() {
     private fun setupFabListener() {
         binding.fabAddTransaction.setOnClickListener {
             val navOptions = NavOptions.Builder()
-                .setEnterAnim(R.anim.bottom_sheet_slide_in)
-                .setExitAnim(R.anim.bottom_sheet_slide_out)
+                .setEnterAnim(R.anim.fragment_grow_from_lower_right)
+                .setExitAnim(R.anim.fragment_hide_to_lower_right)
                 .setPopEnterAnim(android.R.anim.fade_in)
-                .setPopExitAnim(R.anim.bottom_sheet_slide_out)
+                .setPopExitAnim(R.anim.fragment_hide_to_lower_right)
                 .build()
 
             val bundle = bundleOf(
@@ -76,6 +82,7 @@ class TransactionFragment : Fragment() {
             navController.navigate(R.id.navigation_expense, bundle, navOptions)
         }
     }
+
 
     private fun observeData() {
         observeBudgetWithExpenses()
@@ -101,7 +108,7 @@ class TransactionFragment : Fragment() {
     }
 
     private fun observeIfTransactionHasBeenAdded() {
-        sharedViewModel.isAddedExpenseOrIncome.observe(viewLifecycleOwner, {isAdded ->
+        sharedViewModel.isAddedExpenseOrIncome.observe(viewLifecycleOwner, { isAdded ->
             if (isAdded) {
                 viewModel.fetchFreshData()
                 sharedViewModel.refreshBarChartComplete()

@@ -9,8 +9,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.transition.MaterialArcMotion
+import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import pl.podwikagrzegorz.mrbudget.R
 import pl.podwikagrzegorz.mrbudget.data.domain.ExpenseType
@@ -26,7 +30,7 @@ class ExpenseFragment : Fragment() {
     private lateinit var binding: ExpenseFragmentBinding
     private val viewModel: ExpenseViewModel by viewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
-    private lateinit var adapter : ExpenseTypeAdapter
+    private lateinit var adapter: ExpenseTypeAdapter
 
     private var selectedExpenseType: ExpenseType? = null
 
@@ -59,7 +63,7 @@ class ExpenseFragment : Fragment() {
 
         ExpenseType.values().forEach { type ->
             val iconName = "ic_" + type.name.toLowerCase(Locale.ROOT)
-            val resId = requireContext().resIdByName(iconName , "drawable")
+            val resId = requireContext().resIdByName(iconName, "drawable")
 
             expenseTypeIcons.add(resources.getDrawable(resId, null))
         }
@@ -112,11 +116,15 @@ class ExpenseFragment : Fragment() {
 
     private fun addExpense() {
         if (selectedExpenseType == null) {
-            Toast.makeText(requireContext(), getString(R.string.select_category), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.select_category),
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
 
-        val name : String = if (binding.editTextNameOfExpense.text != null) {
+        val name: String = if (!binding.editTextNameOfExpense.text.isNullOrEmpty()) {
             binding.editTextNameOfExpense.text.toString()
         } else
             getString(R.string.expense)
@@ -128,7 +136,7 @@ class ExpenseFragment : Fragment() {
     }
 
     private fun addIncome() {
-        val name : String = if (binding.editTextNameOfExpense.text != null) {
+        val name: String = if (!binding.editTextNameOfExpense.text.isNullOrEmpty()) {
             binding.editTextNameOfExpense.text.toString()
         } else
             getString(R.string.income)

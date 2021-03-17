@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import com.google.android.material.color.MaterialColors
+import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import pl.podwikagrzegorz.mrbudget.R
 import pl.podwikagrzegorz.mrbudget.databinding.CardviewPiechartExpensesBinding
@@ -14,7 +17,6 @@ import pl.podwikagrzegorz.mrbudget.databinding.CardviewPiechartExpensesBinding
 class HistoryDetailsFragment : Fragment() {
     private lateinit var binding: CardviewPiechartExpensesBinding
     private val viewModel: HistoryDetailsViewModel by viewModels()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
