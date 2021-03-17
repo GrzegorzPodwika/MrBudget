@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Grzegorz/AndroidStudioProjects/MrBudget/app/src/main/res/drawable-v24/ic_cancel.xml" value="0.1824074074074074" />
         <entry key="..\:/Users/Grzegorz/AndroidStudioProjects/MrBudget/app/src/main/res/drawable/ic_add.xml" value="0.2518518518518518" />
         <entry key="..\:/Users/Grzegorz/AndroidStudioProjects/MrBudget/app/src/main/res/drawable/ic_addition.xml" value="0.2518518518518518" />
         <entry key="..\:/Users/Grzegorz/AndroidStudioProjects/MrBudget/app/src/main/res/drawable/ic_check.xml" value="0.2518518518518518" />
@@ -23,7 +24,7 @@
         <entry key="..\:/Users/Grzegorz/AndroidStudioProjects/MrBudget/app/src/main/res/layout/edit_expense_dialog.xml" value="0.21614583333333334" />
         <entry key="..\:/Users/Grzegorz/AndroidStudioProjects/MrBudget/app/src/main/res/layout/expense_fragment.xml" value="0.18819655521783182" />
         <entry key="..\:/Users/Grzegorz/AndroidStudioProjects/MrBudget/app/src/main/res/layout/expense_type_holder.xml" value="0.18819655521783182" />
-        <entry key="..\:/Users/Grzegorz/AndroidStudioProjects/MrBudget/app/src/main/res/layout/expense_view.xml" value="0.13518518518518519" />
+        <entry key="..\:/Users/Grzegorz/AndroidStudioProjects/MrBudget/app/src/main/res/layout/expense_view.xml" value="0.1" />
         <entry key="..\:/Users/Grzegorz/AndroidStudioProjects/MrBudget/app/src/main/res/layout/history_budget_view.xml" value="0.20471014492753623" />
         <entry key="..\:/Users/Grzegorz/AndroidStudioProjects/MrBudget/app/src/main/res/layout/history_fragment.xml" value="0.18819655521783182" />
         <entry key="..\:/Users/Grzegorz/AndroidStudioProjects/MrBudget/app/src/main/res/layout/transaction_fragment.xml" value="0.25" />

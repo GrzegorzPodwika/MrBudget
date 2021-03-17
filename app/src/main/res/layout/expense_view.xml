@@ -35,7 +35,7 @@
                 android:layout_height="match_parent"
                 android:background="#d2691e"
                 android:gravity="center"
-                android:text="EDIT"
+                android:text="@string/edit"
                 android:onClick="@{() -> editdeleteListener.onEditClick(expense)}"
                 android:textColor="#ffffff" />
 
@@ -46,7 +46,7 @@
                 android:background="#d269"
                 android:gravity="center"
                 android:onClick="@{() -> editdeleteListener.onDeleteClick(expense)}"
-                android:text="DELETE"
+                android:text="@string/delete"
                 android:textColor="#ffffff" />
 
         </LinearLayout>

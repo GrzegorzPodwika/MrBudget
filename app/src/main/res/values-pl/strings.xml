@@ -15,8 +15,8 @@
     <string name="pln_currency">PLN</string>
     <string name="total_expenses">Wszystkie wydatki</string>
     <string name="total_income">Wszystkie przychody</string>
-    <string name="cancel">ANULUJ</string>
-    <string name="confirm">POTWIERDŹ</string>
+    <string name="cancel">Anuluj</string>
+    <string name="confirm">Potwierdź</string>
     <string name="instructions_enable_dark_title">Tryb ciemny</string>
 
     <string-array name="months">
@@ -44,6 +44,8 @@
     <string name="select_category">Wybierz kategorię</string>
     <string name="expense_hint">Nazwa wydatku</string>
     <string name="income_hint">Nazwa przychodu</string>
+    <string name="edit">EDYTUJ</string>
+    <string name="delete">USUŃ</string>
 
 
 </resources>
