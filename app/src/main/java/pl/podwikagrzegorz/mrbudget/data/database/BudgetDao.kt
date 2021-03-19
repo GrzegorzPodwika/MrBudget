@@ -1,5 +1,6 @@
 package pl.podwikagrzegorz.mrbudget.data.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
@@ -18,7 +19,7 @@ interface BudgetDao {
     suspend fun budgetsCount(): Int
 
     @Query("SELECT * FROM budget_table WHERE budgetId = :key")
-    suspend fun getBudgetById(key: Long) : DatabaseBudget
+    suspend fun getBudgetById(key: Long): DatabaseBudget
 
     @Query("SELECT * FROM budget_table ORDER BY date DESC LIMIT 1")
     suspend fun getLatestBudget(): DatabaseBudget
@@ -27,22 +28,20 @@ interface BudgetDao {
     @Query("SELECT * FROM budget_table WHERE budgetId = :key")
     suspend fun getBudgetWithExpensesById(key: Long): BudgetWithExpenses
 
-    @Transaction
-    @Query("SELECT * FROM expense_table WHERE budgetOwnerId = :key and type = :expenseType")
-    suspend fun getBudgetWithExpensesById(key: Long, expenseType: String): List<DatabaseExpense>
+    @Query("SELECT * FROM expense_table WHERE budgetOwnerId = :key")
+    fun observeExpensesByBudgetId(key: Long): LiveData<List<DatabaseExpense>>
+
+    @Query("SELECT * FROM income_table WHERE budgetOwnerId = :key")
+    fun observeIncomesByBudgetId(key: Long): LiveData<List<DatabaseIncome>>
 
 
     @Transaction
     @Query("SELECT * FROM budget_table")
-    suspend fun getAllBudgetsWithExpenses() : List<BudgetWithExpenses>
+    suspend fun getAllBudgetsWithExpenses(): List<BudgetWithExpenses>
 
     @Transaction
     @Query("SELECT * FROM budget_table")
-    suspend fun getAllBudgetsWithIncomes() : List<BudgetWithIncomes>
-
-//    @Transaction
-//    @Query("SELECT * FROM budget_table WHERE budgetId = :key ORDER BY budgetId DESC")
-//    suspend fun getAllExpensesOrderByIdDesc(key: Long): BudgetWithExpenses
+    suspend fun getAllBudgetsWithIncomes(): List<BudgetWithIncomes>
 
     @Transaction
     @Query("SELECT * FROM budget_table WHERE budgetId = :key")

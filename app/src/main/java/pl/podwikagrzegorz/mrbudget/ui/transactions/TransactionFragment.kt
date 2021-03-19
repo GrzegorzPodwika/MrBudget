@@ -29,6 +29,12 @@ class TransactionFragment : Fragment() {
     private val viewModel: TransactionViewModel by viewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private val navController by lazy { findNavController() }
+    private val navOptions = NavOptions.Builder()
+        .setEnterAnim(R.anim.fragment_grow_from_lower_right)
+        .setExitAnim(R.anim.fragment_hide_to_lower_right)
+        .setPopEnterAnim(android.R.anim.fade_in)
+        .setPopExitAnim(R.anim.fragment_hide_to_lower_right)
+        .build()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,12 +74,6 @@ class TransactionFragment : Fragment() {
 
     private fun setupFabListener() {
         binding.fabAddTransaction.setOnClickListener {
-            val navOptions = NavOptions.Builder()
-                .setEnterAnim(R.anim.fragment_grow_from_lower_right)
-                .setExitAnim(R.anim.fragment_hide_to_lower_right)
-                .setPopEnterAnim(android.R.anim.fade_in)
-                .setPopExitAnim(R.anim.fragment_hide_to_lower_right)
-                .build()
 
             val bundle = bundleOf(
                 Constants.BUDGET_ID to viewModel.latestBudget.value!!.budgetId

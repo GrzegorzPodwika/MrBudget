@@ -1,18 +1,17 @@
 package pl.podwikagrzegorz.mrbudget.ui.transactions
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
-import org.junit.Rule
-import org.junit.Test
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
-import org.junit.runner.RunWith
+import org.junit.Rule
+import org.junit.Test
 import pl.podwikagrzegorz.mrbudget.data.domain.Budget
+import pl.podwikagrzegorz.mrbudget.database.repo.FakeBudgetRepository
 import pl.podwikagrzegorz.mrbudget.other.isTheSameMonth
 import java.util.*
 
@@ -28,7 +27,7 @@ class TransactionViewModelTest {
     }
 
     @Test
-    fun `checks if viewmodel inserts first budget with no budgets in db`() {
+    fun `viewmodel inserts first budget with no budgets in db`() {
         // Given a fresh ViewModel
         val transactionViewModel = TransactionViewModel(fakeBudgetRepository)
 
@@ -39,7 +38,7 @@ class TransactionViewModelTest {
     }
 
     @Test
-    fun `checks if viewmodel inserts next budget with new month case`() {
+    fun `viewmodel inserts next budget with new month case`() {
         // given
         setupDBWithOldBudget()
         val transactionViewModel = TransactionViewModel(fakeBudgetRepository)
@@ -71,7 +70,7 @@ class TransactionViewModelTest {
     }
 
     @Test
-    fun `checks if viewmodel fetching latest budget is correct`() {
+    fun `viewmodel fetching latest budget is correct`() {
         // Given a fresh ViewModel
         val currentBudget = Budget(0, Date())
         runBlockingTest {
@@ -86,7 +85,7 @@ class TransactionViewModelTest {
     }
 
     @Test
-    fun `checks if viewmodel fetching data is correct`() {
+    fun `viewmodel fetching data is correct`() {
         // Given a fresh ViewModel
         val currentBudget = Budget(0, Date())
         runBlockingTest {

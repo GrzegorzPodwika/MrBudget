@@ -1,4 +1,4 @@
-package pl.podwikagrzegorz.mrbudget.ui.transactions
+package pl.podwikagrzegorz.mrbudget.database.repo
 
 import pl.podwikagrzegorz.mrbudget.data.database.BudgetWithExpenses
 import pl.podwikagrzegorz.mrbudget.data.database.BudgetWithIncomes
