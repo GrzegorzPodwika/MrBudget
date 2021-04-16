@@ -2,13 +2,10 @@ package pl.podwikagrzegorz.mrbudget.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.chauthai.swipereveallayout.ViewBinderHelper
-import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -93,7 +90,7 @@ class ExpenseAdapter
                     ExpenseType.GIFTS -> {
                         val filteredList =
                             originalListOfExpenses.filter { expense -> expense.type == ExpenseType.GIFTS }
-                        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                        withContext(Dispatchers.Main) {
                             submitList(filteredList)
                         }
                     }
@@ -101,7 +98,7 @@ class ExpenseAdapter
                     ExpenseType.EDUCATION -> {
                         val filteredList =
                             originalListOfExpenses.filter { expense -> expense.type == ExpenseType.EDUCATION }
-                        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                        withContext(Dispatchers.Main) {
                             submitList(filteredList)
                         }
                     }
@@ -109,7 +106,7 @@ class ExpenseAdapter
                     ExpenseType.HOME -> {
                         val filteredList =
                             originalListOfExpenses.filter { expense -> expense.type == ExpenseType.HOME }
-                        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                        withContext(Dispatchers.Main) {
                             submitList(filteredList)
                         }
                     }
@@ -117,7 +114,7 @@ class ExpenseAdapter
                     ExpenseType.HOBBY -> {
                         val filteredList =
                             originalListOfExpenses.filter { expense -> expense.type == ExpenseType.HOBBY }
-                        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                        withContext(Dispatchers.Main) {
                             submitList(filteredList)
                         }
                     }

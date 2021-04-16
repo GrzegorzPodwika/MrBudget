@@ -41,7 +41,6 @@ class TransactionViewModelTest {
     fun `viewmodel inserts next budget with new month case`() {
         // given
         setupDBWithOldBudget()
-        val transactionViewModel = TransactionViewModel(fakeBudgetRepository)
         val now = Date()
 
         // when
@@ -71,7 +70,7 @@ class TransactionViewModelTest {
 
     @Test
     fun `viewmodel fetching latest budget is correct`() {
-        // Given a fresh ViewModel
+        // Given
         val currentBudget = Budget(0, Date())
         runBlockingTest {
             fakeBudgetRepository.insertBudget(currentBudget)
@@ -86,7 +85,7 @@ class TransactionViewModelTest {
 
     @Test
     fun `viewmodel fetching data is correct`() {
-        // Given a fresh ViewModel
+        // Given
         val currentBudget = Budget(0, Date())
         runBlockingTest {
             fakeBudgetRepository.insertBudget(currentBudget)
